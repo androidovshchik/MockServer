@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import defpackage.mockserver.remote.api.Post
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class ServerMock(
@@ -17,7 +16,6 @@ class ServerMock(
         return Observable.fromCallable {
             val json = context.assets.open("posts.json").bufferedReader().use { it.readText() }
             gson.fromJson<List<Post>>(json, TypeToken.getParameterized(List::class.java, Post::class.java).type)
-        }.subscribeOn(Schedulers.io())
-            .delay((200..1000).random().toLong(), TimeUnit.MILLISECONDS)
+        }.delay((200..1000).random().toLong(), TimeUnit.MILLISECONDS)
     }
 }

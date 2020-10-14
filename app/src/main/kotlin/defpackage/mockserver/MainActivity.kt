@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import dagger.android.support.DaggerAppCompatActivity
 import defpackage.mockserver.remote.ServerApi
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -25,8 +23,8 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         disposable.add(
-            Observable.interval(0, 3, TimeUnit.SECONDS, Schedulers.io())
-                .flatMap { serverApi.getPosts() }
+            serverApi.getPosts()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     tv_json.text = """

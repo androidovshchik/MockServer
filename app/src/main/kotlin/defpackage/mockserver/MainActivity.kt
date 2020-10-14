@@ -32,6 +32,9 @@ class MainActivity : DaggerAppCompatActivity() {
                     """.trimIndent()
                 }, {
                     Log.e(javaClass.simpleName, it.message, it)
+                    tv_json.text = """
+                        Error message: ${it.message}
+                    """.trimIndent()
                 })
         )
     }
